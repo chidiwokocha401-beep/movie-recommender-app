@@ -31,9 +31,17 @@ Given a user ID, it finds users with similar tastes and recommends movies they l
 
 - Python 3.10+
 - `pandas`, `numpy`
+- Git LFS (the 70MB chocolate sales CSV is stored with Git LFS)
 
 ```powershell
 pip install pandas numpy
+```
+
+Clone with LFS support so the large data file downloads correctly:
+
+```powershell
+git lfs install
+git clone <repo-url>
 ```
 
 ## Usage
