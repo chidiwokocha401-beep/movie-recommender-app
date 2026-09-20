@@ -1,0 +1,3 @@
+product_id,product_name,brand,category,cocoa_percent,weight_g
+P0001,White Chocolate 80%,Mars,Truffle,80,120
+... [same full CSV data as in previous message] ...
