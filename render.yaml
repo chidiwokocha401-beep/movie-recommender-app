@@ -1,0 +1,38 @@
+# Render Blueprint: deploys the full stack from this repo.
+# In the Render dashboard: New → Blueprint → select this repo → Apply.
+
+services:
+  - type: web
+    name: movie-api
+    runtime: docker
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    preDeployCommand: python -m recommender.batch --db "$DATABASE_URL"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: movie-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: movie-cache
+          type: redis
+          property: connectionString
+      - key: CORS_ORIGINS
+        value: https://movie-web.onrender.com
+
+  - type: web
+    name: movie-web
+    runtime: docker
+    dockerfilePath: ./apps/web/Dockerfile
+    dockerContext: .
+
+  - type: redis
+    name: movie-cache
+    plan: free
+    ipAllowList: []
+
+databases:
+  - name: movie-db
+    plan: free
