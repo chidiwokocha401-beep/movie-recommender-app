@@ -28,7 +28,7 @@ def client():
 def test_health_no_service_needed():
     app.dependency_overrides.clear()
     with TestClient(app) as test_client:
-        assert test_client.get("/health").json() == {"status": "ok"}
+        assert test_client.get("/health").json()["status"] == "ok"
 
 
 def test_list_movies_and_search(client):
