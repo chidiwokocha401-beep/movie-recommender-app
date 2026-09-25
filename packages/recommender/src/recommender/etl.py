@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import numpy as np
@@ -9,7 +10,14 @@ import pandas as pd
 
 
 def default_paths() -> tuple[Path, Path]:
-    """Locate the legacy ``u.data`` / ``u.item`` files relative to the repo."""
+    """Locate the legacy ``u.data`` / ``u.item`` files.
+
+    ``MOVIELENS_DATA`` / ``MOVIELENS_ITEM`` env vars override (used in Docker);
+    otherwise resolved relative to the repo.
+    """
+    data_env, item_env = os.getenv("MOVIELENS_DATA"), os.getenv("MOVIELENS_ITEM")
+    if data_env and item_env:
+        return Path(data_env), Path(item_env)
     repo_root = Path(__file__).resolve().parents[4]
     legacy = repo_root / "movie-recommender-main"
     return legacy / "u.data", legacy / "u.item"

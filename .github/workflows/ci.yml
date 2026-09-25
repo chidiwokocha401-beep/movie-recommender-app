@@ -54,3 +54,21 @@ jobs:
       - run: uvicorn app.main:app --app-dir apps/api --port 8000 &
       - run: for i in $(seq 1 30); do curl -sf http://127.0.0.1:8000/health && break; sleep 2; done
       - run: npm run test:e2e --prefix apps/web
+
+  compose:
+    runs-on: ubuntu-latest
+    env:
+      POSTGRES_PASSWORD: ci-password
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - run: docker compose build
+      - run: docker compose up -d postgres redis
+      - run: docker compose run --rm api python -m recommender.batch --db "$DATABASE_URL"
+        env:
+          DATABASE_URL: postgresql://postgres:ci-password@postgres:5432/postgres
+      - run: docker compose up -d
+      - run: for i in $(seq 1 30); do curl -sf http://127.0.0.1:8000/health && break; sleep 5; done
+      - run: curl -sf "http://127.0.0.1:8000/users/1/recommendations?k=3"
+      - run: docker compose down

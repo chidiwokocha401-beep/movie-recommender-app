@@ -31,6 +31,18 @@ def _rating_limit() -> str:
 
 limiter = Limiter(key_func=get_remote_address)
 app = FastAPI(title="Movie Recommender API")
+
+
+def _cors_origins() -> list[str]:
+    return [
+        origin.strip()
+        for origin in os.getenv(
+            "CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173"
+        ).split(",")
+        if origin.strip()
+    ]
+
+
 app.state.limiter = limiter
 app.add_exception_handler(
     RateLimitExceeded,
@@ -42,7 +54,7 @@ app.add_middleware(SlowAPIMiddleware)
 app.add_middleware(ObservabilityMiddleware)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=_cors_origins(),
     allow_methods=["*"],
     allow_headers=["*"],
 )
