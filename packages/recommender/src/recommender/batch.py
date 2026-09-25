@@ -79,6 +79,7 @@ def main(argv: list[str] | None = None) -> None:
     timings["db"] = args.db
 
     doc = REPO_ROOT / "docs" / "batch.md"
+    doc.parent.mkdir(parents=True, exist_ok=True)
     lines = [
         "# Batch job — precomputed recommendations",
         "",
