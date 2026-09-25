@@ -71,6 +71,28 @@ Movie recommendations for 1:
 ...
 ```
 
+## API (Slice 4)
+
+```powershell
+# from the repo root, with .venv active
+uvicorn app.main:app --app-dir apps/api --port 8000
+```
+
+Interactive docs at `http://127.0.0.1:8000/docs`. Endpoints:
+
+```
+GET  /health
+GET  /movies?search=&limit=&offset=
+GET  /movies/{movie_id}
+POST /ratings                      {user_id, movie_id, rating 1-5}
+GET  /users/{id}/recommendations?k=
+GET  /users/{id}/similar?n=
+GET  /users/{id}/similarity/{other}?metric=pearson|euclidean
+```
+
+Reads are served from the in-memory service (~100 ms warm); `POST /ratings`
+rebuilds similarities (~2 s on MovieLens 100K).
+
 ## Dataset
 
 MovieLens 100K sample included as `u.data` (100,000 ratings, 943 users, 1682 movies) and `u.item` (movie IDs/titles). Format follows the original GroupLens release.
