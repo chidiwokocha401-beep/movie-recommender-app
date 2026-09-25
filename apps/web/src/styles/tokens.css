@@ -1,0 +1,50 @@
+/* Design tokens: color, type, spacing, radius. Light default + dark override.
+   Text/background pairs below all clear WCAG AA (4.5:1) for normal text. */
+
+:root {
+  --color-bg: #ffffff;
+  --color-surface: #f8fafc;
+  --color-text: #1f2937;
+  --color-muted: #4b5563;
+  --color-border: #e5e7eb;
+  --color-primary: #1d4ed8;
+  --color-primary-hover: #1e40af;
+  --color-primary-text: #ffffff;
+  --color-star: #b45309;
+  --color-score-high: #15803d;
+  --color-score-mid: #b45309;
+  --color-score-low: #b91c1c;
+  --color-skeleton: #e5e7eb;
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+}
+
+[data-theme="dark"] {
+  --color-bg: #111827;
+  --color-surface: #1f2937;
+  --color-text: #f9fafb;
+  --color-muted: #d1d5db;
+  --color-border: #374151;
+  --color-primary: #60a5fa;
+  --color-primary-hover: #93c5fd;
+  --color-primary-text: #111827;
+  --color-star: #fbbf24;
+  --color-score-high: #4ade80;
+  --color-score-mid: #fbbf24;
+  --color-score-low: #f87171;
+  --color-skeleton: #374151;
+}
