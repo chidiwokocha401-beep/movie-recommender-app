@@ -26,3 +26,6 @@ dist/
 .coverage
 coverage/
 htmlcov/
+
+# Local run artifacts (SQLite output, downloaded data)
+data/
