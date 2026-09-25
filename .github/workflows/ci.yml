@@ -35,3 +35,22 @@ jobs:
         with:
           name: storybook-static
           path: apps/web/storybook-static
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e ./apps/api[dev] -e ./packages/recommender[dev]
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install --prefix apps/web
+      - run: npx --prefix apps/web playwright install chromium --with-deps
+      - run: uvicorn app.main:app --app-dir apps/api --port 8000 &
+      - run: for i in $(seq 1 30); do curl -sf http://127.0.0.1:8000/health && break; sleep 2; done
+      - run: npm run test:e2e --prefix apps/web

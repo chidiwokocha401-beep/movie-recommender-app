@@ -1,4 +1,5 @@
 from fastapi import Depends, FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
 from recommender.service import RecommenderService
 
 from app.deps import get_service
@@ -12,6 +13,12 @@ from app.schemas import (
 )
 
 app = FastAPI(title="Movie Recommender API")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def _require_user(service: RecommenderService, user_id: int) -> None:

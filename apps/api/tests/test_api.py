@@ -40,6 +40,12 @@ def test_list_movies_and_search(client):
     )
 
 
+def test_cors_allows_web_dev_origin(client):
+    response = client.get("/movies", headers={"Origin": "http://127.0.0.1:5173"})
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == "http://127.0.0.1:5173"
+
+
 def test_get_movie_and_404(client):
     assert client.get("/movies/10").json() == {"movie_id": 10, "title": "A"}
     assert client.get("/movies/999").status_code == 404

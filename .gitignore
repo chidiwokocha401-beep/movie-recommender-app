@@ -21,6 +21,8 @@ Thumbs.db
 node_modules/
 dist/
 storybook-static/
+test-results/
+playwright-report/
 *.tsbuildinfo
 
 # Test / coverage
