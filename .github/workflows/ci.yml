@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  pull_request: {}
+  push:
+    branches: [main]
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e ./apps/api[dev] -e ./packages/recommender[dev]
+      - run: ruff check apps/api packages/recommender
+      - run: ruff format --check apps/api packages/recommender
+      - run: pytest apps/api packages/recommender
+
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install --prefix apps/web
+      - run: npm run lint --prefix apps/web
+      - run: npm run build --prefix apps/web

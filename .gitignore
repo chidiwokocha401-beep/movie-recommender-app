@@ -16,3 +16,13 @@ venv/
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Node / web
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Test / coverage
+.coverage
+coverage/
+htmlcov/

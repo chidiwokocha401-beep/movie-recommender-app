@@ -75,6 +75,43 @@ Movie recommendations for 1:
 
 MovieLens 100K sample included as `u.data` (100,000 ratings, 943 users, 1682 movies) and `u.item` (movie IDs/titles). Format follows the original GroupLens release.
 
+## Development (Slice 0 scaffold)
+
+Monorepo layout — legacy prototype in `movie-recommender-main/` is untouched:
+
+```
+apps/api/            # FastAPI backend (Slice 4 fills in endpoints)
+apps/web/            # React + TypeScript frontend (Slices 5-6 fill in UI)
+packages/recommender/ # Shared recommendation core (Slice 2 ports the algorithms)
+```
+
+Bootstrap (one command per app):
+
+```powershell
+# API + recommender core (Python 3.10+)
+python -m venv .venv; .\.venv\Scripts\Activate.ps1
+pip install -e apps/api[dev] -e packages/recommender[dev]
+
+# Web (Node 20+)
+npm run bootstrap:web
+```
+
+Verify:
+
+```powershell
+pytest apps/api packages/recommender   # Python tests
+ruff check apps/api packages/recommender
+npm run lint --prefix apps/web; npm run build --prefix apps/web
+```
+
+Pre-commit (ruff for Python; ESLint runs in CI and via `npm run lint`):
+
+```powershell
+pip install pre-commit; pre-commit install
+```
+
+CI (`.github/workflows/ci.yml`) runs Python lint+tests and web lint+build on every PR and push to `main`.
+
 ## Limitations
 
 - User-based only, no item-based or matrix factorization.
